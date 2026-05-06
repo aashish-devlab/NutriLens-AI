@@ -2,29 +2,29 @@
 
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { ReactNode } from "react";
 
 interface GlassCardProps {
-  children: ReactNode;
+  children: React.ReactNode;
   className?: string;
-  delay?: number;
   hover?: boolean;
 }
 
-export function GlassCard({ children, className, delay = 0, hover = true }: GlassCardProps) {
+export function GlassCard({ children, className, hover = true }: GlassCardProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay }}
-      whileHover={hover ? { y: -5, transition: { duration: 0.2 } } : {}}
+      whileHover={hover ? { y: -8, scale: 1.01 } : {}}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
       className={cn(
-        "glass-morphism rounded-2xl p-6 relative overflow-hidden group",
+        "glass-morphism rounded-[2.5rem] p-6 transition-all duration-500",
+        hover && "hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] hover:border-emerald-500/20",
         className
       )}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       <div className="relative z-10">{children}</div>
+      {/* Subtle Glow Effect on Hover */}
+      {hover && (
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/0 via-emerald-500/0 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-[2.5rem]" />
+      )}
     </motion.div>
   );
 }

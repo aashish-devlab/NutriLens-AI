@@ -1,31 +1,29 @@
 import { cn } from "@/lib/utils";
 
-export function Skeleton({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+interface SkeletonProps {
+  className?: string;
+}
+
+export function Skeleton({ className }: SkeletonProps) {
   return (
     <div
-      className={cn("animate-pulse rounded-md bg-white/5", className)}
-      {...props}
+      className={cn(
+        "animate-pulse rounded-2xl bg-white/5 border border-white/5",
+        className
+      )}
     />
   );
 }
 
-export function AnalysisSkeleton() {
+export function CardSkeleton() {
   return (
-    <div className="space-y-8">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <Skeleton className="h-64 rounded-2xl" />
-        <Skeleton className="lg:col-span-2 h-64 rounded-2xl" />
+    <div className="p-6 space-y-4 rounded-[2.5rem] bg-white/5 border border-white/10">
+      <Skeleton className="h-12 w-12 rounded-xl" />
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-[60%]" />
+        <Skeleton className="h-3 w-[40%]" />
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <Skeleton className="h-96 rounded-2xl" />
-        <div className="space-y-8">
-          <Skeleton className="h-44 rounded-2xl" />
-          <Skeleton className="h-44 rounded-2xl" />
-        </div>
-      </div>
+      <Skeleton className="h-20 w-full" />
     </div>
   );
 }
