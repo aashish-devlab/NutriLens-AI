@@ -1,6 +1,5 @@
 "use client";
 
-import DashboardLayout from "@/app/dashboard/layout";
 import { GlassCard } from "@/components/shared/GlassCard";
 import { 
   Zap, 
@@ -52,7 +51,6 @@ const item = {
 
 export default function Dashboard() {
   return (
-    <DashboardLayout>
       <motion.div 
         variants={container}
         initial="hidden"
@@ -212,6 +210,5 @@ export default function Dashboard() {
           <HealthyPlaces />
         </motion.div>
       </motion.div>
-    </DashboardLayout>
   );
 }
