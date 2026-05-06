@@ -25,6 +25,7 @@ import {
 import { HealthyPlaces } from "@/components/dashboard/HealthyPlaces";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 const data = [
   { name: 'Mon', calories: 2100 },

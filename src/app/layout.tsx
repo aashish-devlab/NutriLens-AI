@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
-import { Outfit } from "next/font/google";
+import { Outfit, Geist } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const outfit = Outfit({ 
   subsets: ["latin"],
@@ -21,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
       <body className={`${outfit.variable} font-sans antialiased bg-[#020617] text-slate-50 selection:bg-emerald-500/30`}>
         <ThemeProvider
           attribute="class"
