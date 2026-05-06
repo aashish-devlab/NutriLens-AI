@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { DashboardLayout } from "@/app/dashboard/layout";
+import DashboardLayout from "@/app/dashboard/layout";
 import { UploadBox } from "@/components/analysis/UploadBox";
 import { AnalysisResult, ComparisonResult } from "@/types";
 import { Scale, Check, Zap } from "lucide-react";
@@ -18,8 +18,8 @@ export default function ComparePage() {
   const handleUploadA = async (file: File) => {
     // Mock analysis for Meal A
     setMealA({
-      items: [{ name: "Caesar Salad", portion: "Large", macros: { calories: 450, protein: 12, carbs: 25, fat: 32 }, healthScore: 65, description: "", ingredients: [] }],
-      totalMacros: { calories: 450, protein: 12, carbs: 25, fat: 32 },
+      items: [{ name: "Caesar Salad", portion: "Large", macros: { calories: 450, protein: 12, carbs: 25, fat: 32, sugar: 4, fiber: 3 }, healthScore: 65, healthConcerns: ["High saturated fat from dressing"], betterAlternatives: ["Light vinaigrette"], description: "", ingredients: [] }],
+      totalMacros: { calories: 450, protein: 12, carbs: 25, fat: 32, sugar: 4, fiber: 3 },
       averageHealthScore: 65,
       recommendations: [],
       healthyAlternatives: [],
@@ -30,8 +30,8 @@ export default function ComparePage() {
   const handleUploadB = async (file: File) => {
     // Mock analysis for Meal B
     setMealB({
-      items: [{ name: "Greek Salad", portion: "Large", macros: { calories: 320, protein: 10, carbs: 18, fat: 22 }, healthScore: 88, description: "", ingredients: [] }],
-      totalMacros: { calories: 320, protein: 10, carbs: 18, fat: 22 },
+      items: [{ name: "Greek Salad", portion: "Large", macros: { calories: 320, protein: 10, carbs: 18, fat: 22, sugar: 5, fiber: 4 }, healthScore: 88, healthConcerns: ["Moderate sodium from feta"], betterAlternatives: ["Less feta cheese"], description: "", ingredients: [] }],
+      totalMacros: { calories: 320, protein: 10, carbs: 18, fat: 22, sugar: 5, fiber: 4 },
       averageHealthScore: 88,
       recommendations: [],
       healthyAlternatives: [],

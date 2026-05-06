@@ -1,4 +1,3 @@
-import { env } from "@/lib/env";
 
 export async function detectLabels(imageBuffer: Buffer) {
   const apiKey = process.env.GOOGLE_VISION_API_KEY;

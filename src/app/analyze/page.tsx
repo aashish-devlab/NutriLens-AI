@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { DashboardLayout } from "@/app/dashboard/layout";
+import DashboardLayout from "@/app/dashboard/layout";
 import { UploadBox } from "@/components/analysis/UploadBox";
 import { AnalysisDisplay } from "@/components/analysis/AnalysisDisplay";
 import { AnalysisResult } from "@/types";
@@ -11,9 +11,15 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function AnalyzePage() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   const handleUpload = async (file: File) => {
     setIsAnalyzing(true);
+    
+    // Set Preview URL
+    const reader = new FileReader();
+    reader.onload = (e) => setImageUrl(e.target?.result as string);
+    reader.readAsDataURL(file);
     
     // Mock API Call delay
     await new Promise(resolve => setTimeout(resolve, 3000));
@@ -23,21 +29,25 @@ export default function AnalyzePage() {
         {
           name: "Grilled Salmon",
           portion: "150g",
-          macros: { calories: 310, protein: 35, carbs: 0, fat: 18 },
+          macros: { calories: 310, protein: 35, carbs: 0, fat: 18, sugar: 0, fiber: 0 },
           healthScore: 95,
+          healthConcerns: ["None"],
+          betterAlternatives: ["Steamed Vegetables instead of fries"],
           description: "Fresh Atlantic salmon grilled with olive oil and herbs.",
           ingredients: ["Salmon", "Olive Oil", "Black Pepper", "Lemon"]
         },
         {
           name: "Quinoa Salad",
           portion: "1 bowl",
-          macros: { calories: 220, protein: 8, carbs: 32, fat: 7 },
+          macros: { calories: 220, protein: 8, carbs: 32, fat: 7, sugar: 4, fiber: 6 },
           healthScore: 88,
+          healthConcerns: ["Slightly high in sodium if dressing is added"],
+          betterAlternatives: ["Low-sodium dressing"],
           description: "Mixed quinoa with cherry tomatoes, cucumber, and light dressing.",
           ingredients: ["Quinoa", "Cucumber", "Tomato", "Lemon Juice"]
         }
       ],
-      totalMacros: { calories: 530, protein: 43, carbs: 32, fat: 25 },
+      totalMacros: { calories: 530, protein: 43, carbs: 32, fat: 25, sugar: 4, fiber: 6 },
       averageHealthScore: 92,
       recommendations: [
         "Great source of Omega-3 fatty acids from the salmon.",
@@ -116,7 +126,7 @@ export default function AnalyzePage() {
                   </button>
                 </div>
               </div>
-              <AnalysisDisplay result={result} />
+              <AnalysisDisplay result={result} imageUrl={imageUrl || undefined} />
             </motion.div>
           )}
         </AnimatePresence>
