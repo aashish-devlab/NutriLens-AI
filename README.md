@@ -1,6 +1,7 @@
 # NutriLens AI 🥗
 
 NutriLens AI is a premium, AI-powered nutrition analysis platform built for the modern health-conscious individual. Snap a photo, get instant nutritional insights, and make smarter food choices with the power of Gemini AI.
+Deployed Project link : https://nutrilens-ai-prod-v2-yzr4i5yoqa-uc.a.run.app
 
 ## 🚀 Features
 
