@@ -12,35 +12,67 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    // If we have coordinates, use nearbysearch, otherwise use textsearch
+    // Attempting to use the Places API (New) for better compatibility
     let url = "";
+    let method = "POST";
+    let body: any = {};
+    let headers: any = {
+      "Content-Type": "application/json",
+      "X-Goog-Api-Key": apiKey,
+      "X-Goog-FieldMask": "places.displayName,places.formattedAddress,places.rating,places.id,places.types,places.vicinity"
+    };
+
     if (lat && lng) {
-      url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=5000&type=restaurant&keyword=${query}&key=${apiKey}`;
+      url = "https://places.googleapis.com/v1/places:searchNearby";
+      body = {
+        includedTypes: ["restaurant"],
+        maxResultCount: 10,
+        locationRestriction: {
+          circle: {
+            center: {
+              latitude: parseFloat(lat),
+              longitude: parseFloat(lng)
+            },
+            radius: 5000.0
+          }
+        }
+      };
     } else {
-      url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${query}+healthy+restaurants&key=${apiKey}`;
+      url = "https://places.googleapis.com/v1/places:searchText";
+      body = {
+        textQuery: `${query} healthy restaurants`,
+        maxResultCount: 10
+      };
     }
 
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      method,
+      headers,
+      body: JSON.stringify(body)
+    });
+
     const data = await response.json();
 
-    if (data.status !== "OK" && data.status !== "ZERO_RESULTS") {
-      throw new Error(data.error_message || `Google Places API error: ${data.status}`);
+    if (data.error) {
+      console.error("Places API (New) Error:", data.error);
+      // If the New API also fails, we throw to trigger the frontend fallback
+      throw new Error(data.error.message || "Places API error");
     }
 
-    // Map Google results to our internal RestaurantSuggestion type
-    const restaurants = (data.results || []).map((place: any) => ({
-      name: place.name,
-      address: place.vicinity || place.formatted_address,
+    // Map New Places API results to our internal type
+    const restaurants = (data.places || []).map((place: any) => ({
+      name: place.displayName?.text || "Unknown Restaurant",
+      address: place.formattedAddress || place.vicinity || "Address not available",
       rating: place.rating || 0,
-      healthyOptions: ["Plant-based options", "Salads", "Fresh ingredients"], // Mocking menu since Places API doesn't provide it easily without extra calls
+      healthyOptions: ["Fresh ingredients", "Healthy selection", "Salads"], 
       distance: lat ? "Nearby" : "",
-      placeId: place.place_id,
-      photoReference: place.photos?.[0]?.photo_reference,
+      placeId: place.id,
     }));
 
     return NextResponse.json(restaurants);
   } catch (error: any) {
-    console.error("Places API Proxy Error:", error);
+    console.error("Places API Proxy Catch Error:", error.message);
+    // We return a 500 which the frontend fetchHealthyPlaces handles by returning mock data
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
