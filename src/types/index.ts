@@ -3,7 +3,8 @@ export interface MacroNutrients {
   protein: number;
   carbs: number;
   fat: number;
-  fiber?: number;
+  sugar: number;
+  fiber: number;
 }
 
 export interface FoodItem {
@@ -11,6 +12,8 @@ export interface FoodItem {
   portion: string;
   macros: MacroNutrients;
   healthScore: number;
+  healthConcerns: string[];
+  betterAlternatives: string[];
   description: string;
   ingredients: string[];
 }

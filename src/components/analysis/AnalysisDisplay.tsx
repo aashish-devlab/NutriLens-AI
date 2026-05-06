@@ -68,6 +68,8 @@ export function AnalysisDisplay({ result }: AnalysisDisplayProps) {
             { label: "Protein", value: result.totalMacros.protein, unit: "g", color: "text-emerald-400" },
             { label: "Carbs", value: result.totalMacros.carbs, unit: "g", color: "text-cyan-400" },
             { label: "Fat", value: result.totalMacros.fat, unit: "g", color: "text-yellow-400" },
+            { label: "Sugar", value: result.totalMacros.sugar, unit: "g", color: "text-pink-400" },
+            { label: "Fiber", value: result.totalMacros.fiber, unit: "g", color: "text-orange-400" },
           ].map((macro, i) => (
             <div key={i} className="text-center">
               <div className="text-xs text-muted-foreground uppercase font-bold mb-2">{macro.label}</div>
@@ -94,14 +96,28 @@ export function AnalysisDisplay({ result }: AnalysisDisplayProps) {
                 </div>
                 <div className="text-right">
                   <div className="text-sm font-bold text-emerald-400">{item.macros.calories} kcal</div>
-                  <div className="flex gap-2 text-[10px] text-muted-foreground">
+                  <div className="flex gap-2 text-[10px] text-muted-foreground justify-end">
                     <span>P: {item.macros.protein}g</span>
                     <span>C: {item.macros.carbs}g</span>
-                    <span>F: {item.macros.fat}g</span>
+                    <span>S: {item.macros.sugar}g</span>
                   </div>
                 </div>
               </div>
             ))}
+          </div>
+          
+          <div className="mt-8 space-y-4">
+            <h4 className="text-sm font-bold text-red-400 flex items-center gap-2">
+              <AlertCircle className="w-4 h-4" />
+              Health Concerns
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {result.items.flatMap(item => item.healthConcerns).map((concern, i) => (
+                <div key={i} className="px-3 py-1 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-[10px]">
+                  {concern}
+                </div>
+              ))}
+            </div>
           </div>
         </GlassCard>
 
